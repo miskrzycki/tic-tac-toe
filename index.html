@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>tic tac toe</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="Content-type" content="text/html"; charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<script type="text/javascript">
+		var result;
+
+		var startGame = function() {
+
+			for (var i = 1; i <= 9; i++) {
+				clearBox(i);
+			}
+
+			document.turn = "X";	
+			if (Math.random() < 0.5) {
+				document.turn = "O";
+			}
+			document.winner = null;
+			setMessage(document.turn + " gets to start.");
+		}
+
+		var setMessage = function(msg) {
+			document.getElementById("message").innerText = msg;
+		}
+
+		var nextMove = function(square) {
+			if (document.winner != null) {
+				setMessage(document.winner + " already won the game.");
+			} else if (square.innerText == "") {
+				square.innerText = document.turn;
+				switchTurn();
+			} else {
+				setMessage("That square is already used");
+			}	
+		}
+
+		var switchTurn = function() {
+
+			if (checkForWinner(document.turn)) {
+				setMessage("Congratulations, " + document.turn + "! You win!");
+				document.winner = document.turn;
+			} else if (document.turn == "X") {
+				document.turn = "O";
+				setMessage("It's " + document.turn + "'s turn!" );
+			} else {
+				document.turn = "X";
+				setMessage("It's " + document.turn + "'s turn!" );
+			}
+		}
+
+		var checkForWinner= function(move) {
+			result = false;
+			if(checkRow(1, 2, 3, move) || 
+			   checkRow(4, 5, 6, move) || 
+			   checkRow(7, 8, 9, move) ||
+			   checkRow(1, 4, 7, move) ||
+			   checkRow(2, 5, 8, move) ||
+			   checkRow(3, 6, 9, move) ||
+			   checkRow(1, 5, 9, move) ||
+			   checkRow(3, 5, 7, move)) {
+
+				result = true;
+			}
+			return result;
+		}
+
+		var checkRow = function(a, b, c, move) {
+			result = false;
+			if (getBox(a) == move && getBox(b) == move && getBox(c) == move) {
+				result = true;
+			}
+			return result;
+		}
+
+		var getBox = function(number) {
+			return document.getElementById("s" + number).innerText;
+		}
+
+		var	clearBox = function(number) {
+			document.getElementById("s" + number).innerText = "";
+		}
+
+	</script>	
+
+</head>
+<body onload="startGame();">
+	<h1>Tic-Tac-Toe game!</h1>
+
+	<div id="message">messages will go here</div>
+
+	<table border="1">
+		<tr>
+			<td id="s1" class="Square" onclick="nextMove(this);"></td>
+			<td id="s2" class="Square" onclick="nextMove(this);"></td>
+			<td id="s3" class="Square" onclick="nextMove(this);"></td>
+		</tr>
+		<tr>
+			<td id="s4" class="Square" onclick="nextMove(this);"></td>
+			<td id="s5" class="Square" onclick="nextMove(this);"></td>
+			<td id="s6" class="Square" onclick="nextMove(this);"></td>
+		</tr>
+		<tr>
+			<td id="s7" class="Square" onclick="nextMove(this);"></td>
+			<td id="s8" class="Square" onclick="nextMove(this);"></td>
+			<td id="s9" class="Square" onclick="nextMove(this);"></td>
+		</tr>
+	</table>
+	<button onclick="javascript:startGame();">Start over</button>
+</body>
+</html>
